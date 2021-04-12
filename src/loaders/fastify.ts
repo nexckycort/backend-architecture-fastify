@@ -7,6 +7,7 @@ import cors from 'fastify-cors'
 
 import routesV1 from 'api/routes/v1'
 import { api } from 'config'
+import Logger from 'helpers/logger'
 
 export default (): FastifyInstance => {
   const serverFactory = (handler: any, opts: any): http.Server => {
@@ -39,6 +40,10 @@ export default (): FastifyInstance => {
 
   // routes
   app.register(routesV1, { prefix: api.prefix })
+
+  app.ready(() => {
+    Logger.info(app.printRoutes())
+  })
 
   return app
 }
